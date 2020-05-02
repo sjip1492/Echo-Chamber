@@ -21,6 +21,8 @@ public class OscReceiveController : PECController
         osc.SetAddressHandler("/surface_type", OnReceiveSurfaceType);
         osc.SetAddressHandler("/get_room_info", OnReceiveGetRoomInfo);
         osc.SetAddressHandler("/shoot_speed", OnReceiveShootSpeed);
+        osc.SetAddressHandler("/shoot_sphere", OnReceiveShootSphere);
+        osc.SetAddressHandler("/delete_sphere", OnReceiveDeleteSphere);
     }
 
     public void OnSphereTypeUpdate(OscMessage message)
@@ -50,6 +52,16 @@ public class OscReceiveController : PECController
 
     public void OnReceiveShootSpeed(OscMessage message)
     {
-        app.Notify(Notification.PlayerShootSpeed, message);
+        app.Notify(Notification.PlayerShootSpeedOsc, message);
+    }
+
+    public void OnReceiveShootSphere(OscMessage message)
+    {
+        app.Notify(Notification.ShootSphere, message);
+    }
+
+    public void OnReceiveDeleteSphere(OscMessage message)
+    {
+        app.Notify(Notification.DeleteSphere, message);
     }
 }

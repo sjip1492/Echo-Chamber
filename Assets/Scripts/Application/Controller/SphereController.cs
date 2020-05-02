@@ -40,11 +40,11 @@ public class SphereController : PECController
                 GenerateSphere();
                 break;
 
-            case Notification.SphereShoot:
+            case Notification.ShootSphere:
                 ShootSphere(playerController.player.shootSpeed);
                 break;
 
-            case Notification.SphereDelete:
+            case Notification.DeleteSphere:
                 DeleteSphere();
                 break;
 
@@ -125,25 +125,28 @@ public class SphereController : PECController
     public void DeleteSphere()
     {
         int last_sphere = spheresManager.spheres.Count - 1;
-
-        (spheresManager.spheres[last_sphere]).GetComponent<Sphere>().DestroySphere();
-        spheresManager.spheres.RemoveAt(last_sphere);
+        if (last_sphere > -1)
+        {
+            (spheresManager.spheres[last_sphere]).GetComponent<Sphere>().DestroySphere();
+            spheresManager.spheres.RemoveAt(last_sphere);
+        }
     }
 
-    public void UpdateSphereTypeComponent(GameObject sphere, SphereType sphereType)
+    public void UpdateSphereTypeComponent(Sphere sphere, SphereType sphereType)
     {
-        sphere.GetComponent<SphereType>().scale = sphereType.scale;
-        sphere.GetComponent<SphereType>().bounciness = sphereType.bounciness;
-        sphere.GetComponent<SphereType>().audio_file = sphereType.audio_file;
+        sphere.sphereType.scale = sphereType.scale;
+        sphere.sphereType.bounciness = sphereType.bounciness;
+        sphere.sphereType.audio_file = sphereType.audio_file;
     }
 
     public void LiveUpdateSpheres()
     {
-        foreach (var sphere in spheresManager.spheres)
+        foreach (var sphereObject in spheresManager.spheres)
         {
-            SphereType newSphereType = sphereTypesManager.sphereTypes[sphere.GetComponent<SphereType>().id];
+            Sphere sphere = sphereObject.GetComponent<Sphere>();
+            SphereType newSphereType = sphereTypesManager.sphereTypes[sphere.sphereType.id];
             UpdateSphereTypeComponent(sphere, newSphereType);
-            sphere.GetComponent<Sphere>().Init();
+            sphere.Init();
         }
     }
 }

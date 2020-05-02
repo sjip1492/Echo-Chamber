@@ -54,7 +54,7 @@ public class OscSendController : PECController
         for (var id = 0; id < sphere_positions.Count; id++)
         {
             OscMessage pos_msg = new OscMessage();
-            pos_msg.address = "/" + id + "/location";
+            pos_msg.address = "/location/" + id + "/";
 
             Vector3 pos = sphere_positions[id];
 

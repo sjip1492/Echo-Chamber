@@ -55,6 +55,7 @@ public class SphereTypeController : PECController
     public void UpdateSphereType(SphereType sphereType)
     {
         sphereTypesManager.sphereTypes[sphereType.id] = sphereType;
+
         if (sphereTypeLiveUpdate)
         {
             sphereController.LiveUpdateSpheres();

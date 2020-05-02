@@ -4,8 +4,8 @@ public class Notification
     // Game Controller notifications
     public const string SphereCollision = "sphere.collision";
     public const string SphereGenerate = "sphere.generate";
-    public const string SphereShoot = "sphere.shoot";
-    public const string SphereDelete = "sphere.delete";
+    public const string ShootSphere = "sphere.shoot";
+    public const string DeleteSphere = "sphere.delete";
 
     public const string SphereTypeUpdated = "sphere.type.updated";
 
@@ -25,4 +25,5 @@ public class Notification
     public const string RoomInfoGetOsc = "get.room.info";
     public const string PlayerShootSpeed = "player.shoot.speed";
     public const string PlayerShootSpeedOsc = "player.shoot.speed.osc";
+
 }

@@ -58,12 +58,12 @@ public class PlayerController : PECController
 
         if (Input.GetKeyDown(GEN_BALL))
         {
-            app.Notify(Notification.SphereShoot, this);
+            app.Notify(Notification.ShootSphere, this);
         }
 
         if (Input.GetKeyDown(DEL_BALL))
         {
-            app.Notify(Notification.SphereDelete, this);
+            app.Notify(Notification.DeleteSphere, this);
         }
     }
 
