@@ -16,6 +16,7 @@ public class Sphere : PECModel
     public AudioSource audioSource;
     public SphereCollider sphereCollider;
     public JackSourceSend jackSourceSend;
+    public Rigidbody rigidBody;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class Sphere : PECModel
         sphereCollider = gameObject.GetComponent<SphereCollider>();
         audioSource = gameObject.GetComponent<AudioSource>();
         jackSourceSend = gameObject.GetComponent<JackSourceSend>();
+        rigidBody = gameObject.GetComponent<Rigidbody>();
 
         // TODO: load this in a different way, faster, have multiplexer object stored somewhere
         jackSourceSend.multiplexer = FindObjectOfType<JackMultiplexer>();
@@ -34,10 +36,16 @@ public class Sphere : PECModel
         LoadAudioFile();
         UpdateScale(sphereType.scale);
         UpdateBounciness(sphereType.bounciness);
+        UpdateMass(sphereType.mass);
     }
 
     private void Update()
     {
+    }
+
+    public void UpdateMass(float mass)
+    {
+        rigidBody.mass = mass;
     }
 
     public void UpdateScale(float scale)

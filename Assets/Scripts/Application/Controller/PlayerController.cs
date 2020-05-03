@@ -31,13 +31,34 @@ public class PlayerController : PECController
                 UpdateShootSpeed((float)p_data[0]);
                 break;
 
-            //case Notification.SphereShoot:
-            //    ShootSphere(playerController.player.shootSpeed);
-            //    break;
+            case Notification.GravityUpdate:
+                UpdateGravity((Vector3)p_data[0]);
+                break;
+
+            case Notification.GravityUpdateOsc:
+                Debug.Log("Received Osc message: " + Notification.GravityUpdateOsc);
+                UpdateGravityOsc((OscMessage)p_data[0]);
+                break;
 
             default:
                 break;
         }
+    }
+
+    public void UpdateGravity(Vector3 gravity)
+    {
+        Physics.gravity = gravity;
+    }
+
+    public void UpdateGravityOsc(OscMessage message)
+    {
+        float grav_x = message.GetFloat(0);
+        float grav_y = message.GetFloat(1);
+        float grav_z = message.GetFloat(2);
+
+        Vector3 gravity = new Vector3(grav_x, grav_y, grav_z);
+
+        UpdateGravity(gravity);
     }
 
     public void UpdateShootSpeedOsc(OscMessage message)

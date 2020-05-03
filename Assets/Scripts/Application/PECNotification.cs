@@ -20,6 +20,9 @@ public class Notification
 
     public const string KeyboardInput = "keyboard.input";
 
+    public const string GravityUpdateOsc = "gravity.update.osc";
+    public const string GravityUpdate = "gravity.update";
+
     // not used or implemented yet
     public const string SurfaceTypeUpdate = "surface.type.update";
     public const string RoomInfoGetOsc = "get.room.info";

@@ -86,17 +86,18 @@ public class SphereTypeController : PECController
         int id = message.GetInt(0);
         float scale = message.GetFloat(1);
         float bounciness = message.GetFloat(2);
+        float mass = message.GetFloat(3);
 
         StringBuilder audio_file = new StringBuilder();
 
         // reading audio file string from OscMessage
-        for (int char_index = 3; char_index < message.values.Count; char_index++)
+        for (int char_index = 4; char_index < message.values.Count; char_index++)
         {
             char af_char = (char)message.GetInt((int)char_index);
             audio_file.Append(af_char);
         }
 
-        SphereType sphereType = new SphereType(id, scale, bounciness, audio_file.ToString());
+        SphereType sphereType = new SphereType(id, scale, bounciness, audio_file.ToString(), mass);
 
         return sphereType;
     }

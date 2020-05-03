@@ -23,6 +23,7 @@ public class OscReceiveController : PECController
         osc.SetAddressHandler("/shoot_speed", OnReceiveShootSpeed);
         osc.SetAddressHandler("/shoot_sphere", OnReceiveShootSphere);
         osc.SetAddressHandler("/delete_sphere", OnReceiveDeleteSphere);
+        osc.SetAddressHandler("/gravity", OnReceiveGravity);
     }
 
     public void OnSphereTypeUpdate(OscMessage message)
@@ -63,5 +64,10 @@ public class OscReceiveController : PECController
     public void OnReceiveDeleteSphere(OscMessage message)
     {
         app.Notify(Notification.DeleteSphere, message);
+    }
+
+    public void OnReceiveGravity(OscMessage message)
+    {
+        app.Notify(Notification.GravityUpdateOsc, message);
     }
 }
