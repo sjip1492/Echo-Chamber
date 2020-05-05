@@ -15,8 +15,9 @@ public class SurfaceController : PECController
 
         switch (p_event_path)
         {
-            case Notification.SphereCollision:
-                Debug.Log("Collision detected: " + Notification.SphereCollision);
+            case Notification.SurfaceTypeUpdateOsc:
+                Debug.Log(Notification.SurfaceTypeUpdateOsc);
+                UpdateSurfaceTypeOsc((OscMessage)p_data[0]);
                 break;
 
             default:
@@ -27,5 +28,32 @@ public class SurfaceController : PECController
     public int GetNumSurfaces()
     {
         return surfacesManager.surfaces.Count;
+    }
+
+    void InitSurfaces()
+    {
+        foreach (Surface surface in surfacesManager.surfaces)
+        {
+            surface.Init();
+        }
+    }
+
+    void UpdateSurfaceType(int id, float dynamicFriction, float staticFriction, float bounciness)
+    {
+        Surface surface = surfacesManager.surfaces[id];
+
+        surface.UpdateDynamicFriction(dynamicFriction);
+        surface.UpdateStaticFriction(staticFriction);
+        surface.UpdateBounciness(bounciness);
+    }
+
+    void UpdateSurfaceTypeOsc(OscMessage message)
+    {
+        int id = message.GetInt(0);
+        float dynamicFriction = message.GetFloat(1);
+        float staticFriction = message.GetFloat(2);
+        float bounciness = message.GetFloat(3);
+
+        UpdateSurfaceType(id, dynamicFriction, staticFriction, bounciness);
     }
 }

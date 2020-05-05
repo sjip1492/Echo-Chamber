@@ -43,7 +43,7 @@ public class OscReceiveController : PECController
 
     public void OnReceiveSurfaceType(OscMessage message)
     {
-        app.Notify(Notification.SurfaceTypeUpdate, message);
+        app.Notify(Notification.SurfaceTypeUpdateOsc, message);
     }
 
     public void OnReceiveGetRoomInfo(OscMessage message)

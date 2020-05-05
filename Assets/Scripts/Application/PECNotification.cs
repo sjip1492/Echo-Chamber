@@ -24,6 +24,7 @@ public class Notification
     public const string GravityUpdate = "gravity.update";
 
     // not used or implemented yet
+    public const string SurfaceTypeUpdateOsc = "surface.type.update.osc";
     public const string SurfaceTypeUpdate = "surface.type.update";
     public const string RoomInfoGetOsc = "get.room.info";
     public const string PlayerShootSpeed = "player.shoot.speed";

@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 757.0, 334.0, 329.0, 480.0 ],
+		"rect" : [ 34.0, 56.0, 1061.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -37,9 +37,514 @@
 		"tags" : "",
 		"style" : "",
 		"subpatcher_template" : "",
-		"boxes" : [  ],
-		"lines" : [  ],
-		"dependency_cache" : [  ],
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 0,
+					"patching_rect" : [ 922.0, 730.0, 35.0, 22.0 ],
+					"text" : "dac~"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-15",
+					"lastchannelcount" : 0,
+					"maxclass" : "live.gain~",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "signal", "signal", "", "float", "list" ],
+					"parameter_enable" : 1,
+					"patching_rect" : [ 945.0, 567.0, 48.0, 136.0 ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_mmax" : 6.0,
+							"parameter_shortname" : "live.gain~[1]",
+							"parameter_type" : 0,
+							"parameter_unitstyle" : 4,
+							"parameter_mmin" : -70.0,
+							"parameter_longname" : "live.gain~[2]"
+						}
+
+					}
+,
+					"varname" : "live.gain~[2]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"autosave" : 1,
+					"bgmode" : 0,
+					"border" : 0,
+					"clickthrough" : 0,
+					"id" : "obj-13",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 8,
+					"offset" : [ 0.0, 0.0 ],
+					"outlettype" : [ "signal", "signal", "", "list", "int", "", "", "" ],
+					"patching_rect" : [ 1125.583333492279053, 304.0, 377.0, 249.0 ],
+					"save" : [ "#N", "vst~", "loaduniqueid", 0, "SAFEReverb.vstinfo", ";" ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_invisible" : 1,
+							"parameter_longname" : "vst~[1]",
+							"parameter_shortname" : "vst~[1]",
+							"parameter_type" : 3
+						}
+
+					}
+,
+					"saved_object_attributes" : 					{
+						"parameter_enable" : 1,
+						"parameter_mappable" : 0
+					}
+,
+					"snapshot" : 					{
+						"filetype" : "C74Snapshot",
+						"version" : 2,
+						"minorversion" : 0,
+						"name" : "snapshotlist",
+						"origin" : "vst~",
+						"type" : "list",
+						"subtype" : "Undefined",
+						"embed" : 1,
+						"snapshot" : 						{
+							"pluginname" : "SAFEReverb.vstinfo",
+							"plugindisplayname" : "SAFEReverb",
+							"pluginsavedname" : "SAFEReverb",
+							"pluginsaveduniqueid" : 0,
+							"version" : 1,
+							"isbank" : 0,
+							"isbase64" : 1,
+							"sliderorder" : [  ],
+							"slidervisibility" : [ 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
+							"blob" : "255.CMlaKA....fQPMDZ....ALkQRYE..D.o....A.........................................vvVMjLgnK....OSEjQEIUY1UlbhMUYzQWZtc1bf.UXxEVakQWYxASOh.iHf.UXxEVakQWYxESOh.iK0HBHPElbg0VYzUlbxziHwHBHPElbg0VYzUlbyziHv3RMh.BTgIWXsUFckIGM8HBLh.BTgIWXsUFckIWM8HBLtTiHf.UXxEVakQWYxYSOhDiHf.UXxEVakQWYxcSOh.iKwTCLv.CLv.SM4XCLzXCMzbyM0PiHf.UXxEVakQWYxgSOh.iK2TiHu3C."
+						}
+,
+						"snapshotlist" : 						{
+							"current_snapshot" : 0,
+							"entries" : [ 								{
+									"filetype" : "C74Snapshot",
+									"version" : 2,
+									"minorversion" : 0,
+									"name" : "SAFEReverb",
+									"origin" : "SAFEReverb.vstinfo",
+									"type" : "VST",
+									"subtype" : "AudioEffect",
+									"embed" : 0,
+									"snapshot" : 									{
+										"pluginname" : "SAFEReverb.vstinfo",
+										"plugindisplayname" : "SAFEReverb",
+										"pluginsavedname" : "SAFEReverb",
+										"pluginsaveduniqueid" : 0,
+										"version" : 1,
+										"isbank" : 0,
+										"isbase64" : 1,
+										"sliderorder" : [  ],
+										"slidervisibility" : [ 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
+										"blob" : "255.CMlaKA....fQPMDZ....ALkQRYE..D.o....A.........................................vvVMjLgnK....OSEjQEIUY1UlbhMUYzQWZtc1bf.UXxEVakQWYxASOh.iHf.UXxEVakQWYxESOh.iK0HBHPElbg0VYzUlbxziHwHBHPElbg0VYzUlbyziHv3RMh.BTgIWXsUFckIGM8HBLh.BTgIWXsUFckIWM8HBLtTiHf.UXxEVakQWYxYSOhDiHf.UXxEVakQWYxcSOh.iKwTCLv.CLv.SM4XCLzXCMzbyM0PiHf.UXxEVakQWYxgSOh.iK2TiHu3C."
+									}
+,
+									"fileref" : 									{
+										"name" : "SAFEReverb",
+										"filename" : "SAFEReverb.maxsnap",
+										"filepath" : "~/Documents/Max 8/Snapshots",
+										"filepos" : -1,
+										"snapshotfileid" : "7835976a91327a4b46c34c7728480517"
+									}
+
+								}
+ ]
+						}
+
+					}
+,
+					"text" : "vst~ SAFEReverb.vstinfo",
+					"varname" : "vst~[1]",
+					"viewvisibility" : 1
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-12",
+					"lastchannelcount" : 0,
+					"maxclass" : "live.gain~",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "signal", "signal", "", "float", "list" ],
+					"parameter_enable" : 1,
+					"patching_rect" : [ 881.583333492279053, 567.0, 48.0, 136.0 ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_mmax" : 6.0,
+							"parameter_shortname" : "live.gain~[1]",
+							"parameter_type" : 0,
+							"parameter_unitstyle" : 4,
+							"parameter_mmin" : -70.0,
+							"parameter_longname" : "live.gain~[1]"
+						}
+
+					}
+,
+					"varname" : "live.gain~[1]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"autosave" : 1,
+					"bgmode" : 0,
+					"border" : 0,
+					"clickthrough" : 0,
+					"id" : "obj-11",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 8,
+					"offset" : [ 0.0, 0.0 ],
+					"outlettype" : [ "signal", "signal", "", "list", "int", "", "", "" ],
+					"patching_rect" : [ 712.583333492279053, 334.0, 411.0, 175.0 ],
+					"save" : [ "#N", "vst~", "loaduniqueid", 0, "FuzzPlus3.vstinfo", ";" ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_invisible" : 1,
+							"parameter_longname" : "vst~",
+							"parameter_shortname" : "vst~",
+							"parameter_type" : 3
+						}
+
+					}
+,
+					"saved_object_attributes" : 					{
+						"parameter_enable" : 1,
+						"parameter_mappable" : 0
+					}
+,
+					"snapshot" : 					{
+						"filetype" : "C74Snapshot",
+						"version" : 2,
+						"minorversion" : 0,
+						"name" : "snapshotlist",
+						"origin" : "vst~",
+						"type" : "list",
+						"subtype" : "Undefined",
+						"embed" : 1,
+						"snapshot" : 						{
+							"pluginname" : "FuzzPlus3.vstinfo",
+							"plugindisplayname" : "FuzzPlus3",
+							"pluginsavedname" : "FuzzPlus3",
+							"pluginsaveduniqueid" : 0,
+							"version" : 1,
+							"isbank" : 0,
+							"isbase64" : 1,
+							"sliderorder" : [  ],
+							"slidervisibility" : [ 1, 1, 1, 1, 1 ],
+							"blob" : "127.CMlaKA....fQPMDZ....ADDQlMC....Y....A.........................................vPVMjLgnC....OR81az4COv3SL77BL9vSL9.COuDiO7HiOv3RM77hL9vyL9.COuLiO7PiOv3RN0vyKz3COuH0auQmO.."
+						}
+,
+						"snapshotlist" : 						{
+							"current_snapshot" : 0,
+							"entries" : [ 								{
+									"filetype" : "C74Snapshot",
+									"version" : 2,
+									"minorversion" : 0,
+									"name" : "FuzzPlus3",
+									"origin" : "FuzzPlus3.vstinfo",
+									"type" : "VST",
+									"subtype" : "AudioEffect",
+									"embed" : 0,
+									"snapshot" : 									{
+										"pluginname" : "FuzzPlus3.vstinfo",
+										"plugindisplayname" : "FuzzPlus3",
+										"pluginsavedname" : "FuzzPlus3",
+										"pluginsaveduniqueid" : 0,
+										"version" : 1,
+										"isbank" : 0,
+										"isbase64" : 1,
+										"sliderorder" : [  ],
+										"slidervisibility" : [ 1, 1, 1, 1, 1 ],
+										"blob" : "127.CMlaKA....fQPMDZ....ADDQlMC....Y....A.........................................vPVMjLgnC....OR81az4COv3SL77BL9vSL9.COuDiO7HiOv3RM77hL9vyL9.COuLiO7PiOv3RN0vyKz3COuH0auQmO.."
+									}
+,
+									"fileref" : 									{
+										"name" : "FuzzPlus3",
+										"filename" : "FuzzPlus3.maxsnap",
+										"filepath" : "~/Documents/Max 8/Snapshots",
+										"filepos" : -1,
+										"snapshotfileid" : "50b3ac91d5a8f36a629d12eb3ae927f5"
+									}
+
+								}
+ ]
+						}
+
+					}
+,
+					"text" : "vst~ FuzzPlus3.vstinfo",
+					"varname" : "vst~",
+					"viewvisibility" : 1
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgmode" : 0,
+					"border" : 0,
+					"clickthrough" : 0,
+					"enablehscroll" : 0,
+					"enablevscroll" : 0,
+					"id" : "obj-10",
+					"lockeddragscroll" : 0,
+					"maxclass" : "bpatcher",
+					"name" : "PEC_UI.maxpat",
+					"numinlets" : 0,
+					"numoutlets" : 0,
+					"offset" : [ 0.0, 0.0 ],
+					"patching_rect" : [ 11.0, 14.0, 651.0, 578.0 ],
+					"viewvisibility" : 1
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 789.083333492279053, 12.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 845.083333492279053, 14.0, 150.0, 20.0 ],
+					"text" : "= num channels for adc"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 714.083333492279053, 12.0, 69.0, 22.0 ],
+					"text" : "r num_outs"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 6,
+					"outlettype" : [ "signal", "signal", "signal", "signal", "signal", "signal" ],
+					"patching_rect" : [ 712.583333492279053, 78.333336591720581, 255.0, 22.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 15.666666746139526, 716.333336591720581, 253.999999999999943, 22.0 ],
+					"text" : "adc~ 1 2 3 4 5 6"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"channels" : 6,
+					"id" : "obj-3",
+					"lastchannelcount" : 0,
+					"maxclass" : "live.gain~",
+					"numinlets" : 6,
+					"numoutlets" : 9,
+					"outlettype" : [ "signal", "signal", "signal", "signal", "signal", "signal", "", "float", "list" ],
+					"parameter_enable" : 1,
+					"patching_rect" : [ 712.583333492279053, 127.333336591720581, 255.0, 166.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 15.583333492279024, 764.333336591720581, 255.0, 166.0 ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_mmax" : 6.0,
+							"parameter_shortname" : "live.gain~",
+							"parameter_type" : 0,
+							"parameter_unitstyle" : 4,
+							"parameter_mmin" : -70.0,
+							"parameter_longname" : "live.gain~"
+						}
+
+					}
+,
+					"varname" : "live.gain~"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-8", 1 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-12", 0 ],
+					"source" : [ "obj-11", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-17", 0 ],
+					"source" : [ "obj-12", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-15", 0 ],
+					"source" : [ "obj-13", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-17", 1 ],
+					"source" : [ "obj-15", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"source" : [ "obj-3", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"source" : [ "obj-3", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 0 ],
+					"source" : [ "obj-3", 5 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 0 ],
+					"source" : [ "obj-3", 4 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 0 ],
+					"source" : [ "obj-3", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 5 ],
+					"source" : [ "obj-5", 5 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 4 ],
+					"source" : [ "obj-5", 4 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 3 ],
+					"source" : [ "obj-5", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 2 ],
+					"source" : [ "obj-5", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 1 ],
+					"source" : [ "obj-5", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+ ],
+		"parameters" : 		{
+			"obj-12" : [ "live.gain~[1]", "live.gain~[1]", 0 ],
+			"obj-3" : [ "live.gain~", "live.gain~", 0 ],
+			"obj-11" : [ "vst~", "vst~", 0 ],
+			"obj-15" : [ "live.gain~[2]", "live.gain~[1]", 0 ],
+			"obj-13" : [ "vst~[1]", "vst~[1]", 0 ],
+			"parameterbanks" : 			{
+
+			}
+
+		}
+,
+		"dependency_cache" : [ 			{
+				"name" : "PEC_UI.maxpat",
+				"bootpath" : "~/UBC/MUSC 420/MVP",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "FuzzPlus3.maxsnap",
+				"bootpath" : "~/Documents/Max 8/Snapshots",
+				"patcherrelativepath" : "../../../Documents/Max 8/Snapshots",
+				"type" : "mx@s",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "SAFEReverb.maxsnap",
+				"bootpath" : "~/Documents/Max 8/Snapshots",
+				"patcherrelativepath" : "../../../Documents/Max 8/Snapshots",
+				"type" : "mx@s",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "OSC-route.mxo",
+				"type" : "iLaX"
+			}
+ ],
 		"autosave" : 0
 	}
 

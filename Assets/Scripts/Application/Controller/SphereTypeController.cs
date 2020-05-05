@@ -97,8 +97,16 @@ public class SphereTypeController : PECController
             audio_file.Append(af_char);
         }
 
-        SphereType sphereType = new SphereType(id, scale, bounciness, audio_file.ToString(), mass);
+        string audioFileLocation = HandleAudioFilePath(audio_file.ToString());
+
+        SphereType sphereType = new SphereType(id, scale, bounciness, audioFileLocation, mass);
 
         return sphereType;
+    }
+
+    string HandleAudioFilePath(string audioFilePath)
+    {
+
+        return audioFilePath;
     }
 }

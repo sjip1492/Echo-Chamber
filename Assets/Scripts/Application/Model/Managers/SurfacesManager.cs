@@ -28,7 +28,9 @@ public class SurfacesManager : PECModel
 
             Surface surface = surfaceObjects[i].GetComponent<Surface>();
             surface.id = i;
+            surface.Init();
             surfaces.Add(surface);
+            
         }
     }
 }

@@ -26,7 +26,7 @@ public class OscSendController : PECController
         switch (p_event_path)
         {
             case Notification.RoomInfoGetOsc:
-                Debug.Log("Received Osc message: " + Notification.RoomInfoGetOsc);
+                Debug.Log(Notification.RoomInfoGetOsc);
                 SendRoomInfoOsc();
                 break;
 

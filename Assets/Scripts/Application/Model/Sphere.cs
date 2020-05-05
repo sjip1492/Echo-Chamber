@@ -39,10 +39,6 @@ public class Sphere : PECModel
         UpdateMass(sphereType.mass);
     }
 
-    private void Update()
-    {
-    }
-
     public void UpdateMass(float mass)
     {
         rigidBody.mass = mass;
