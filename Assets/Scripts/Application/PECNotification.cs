@@ -23,7 +23,7 @@ public class Notification
     public const string GravityUpdateOsc = "gravity.update.osc";
     public const string GravityUpdate = "gravity.update";
 
-    public const string Error = "error";
+    public const string LogError = "error";
     public const string Log = "log";
 
     // not used or implemented yet

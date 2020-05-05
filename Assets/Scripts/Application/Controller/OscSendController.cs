@@ -36,7 +36,7 @@ public class OscSendController : PECController
                 SendRoomInfoOsc();
                 break;
 
-            case Notification.Error:
+            case Notification.LogError:
                 SendError((string)p_data[0]);
                 break;
 

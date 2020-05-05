@@ -14,6 +14,16 @@ public class SpheresManager : PECModel
         spherePrefab = Resources.Load("Prefabs/Sphere") as GameObject;
     }
 
+    public void LiveUpdateSpheres(Dictionary<int, SphereType> sphereTypes)
+    {
+        foreach (var sphereObject in spheres)
+        {
+            Sphere sphere = sphereObject.GetComponent<Sphere>();
+            SphereType newSphereType = sphereTypes[sphere.sphereTypeId];
+            sphere.Init(newSphereType);
+        }
+    }
+
     public List<Vector3> GetSpherePositions()
     {
         List<Vector3> sphere_locations = new List<Vector3>();

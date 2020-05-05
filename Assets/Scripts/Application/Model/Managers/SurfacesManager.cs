@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JackAudio;
 
 public class SurfacesManager : PECModel
 {
@@ -13,6 +14,13 @@ public class SurfacesManager : PECModel
     {
         base.Awake();
         SetSurfaces();
+        SetJackMultiplexerOuts();
+    }
+
+    void SetJackMultiplexerOuts()
+    {
+        JackMultiplexer jackMultiplexer = FindObjectOfType<JackMultiplexer>();
+        jackMultiplexer.OUTPUTS = surfaces.Count;
     }
 
     void SetSurfaces()
@@ -30,7 +38,6 @@ public class SurfacesManager : PECModel
             surface.id = i;
             surface.Init();
             surfaces.Add(surface);
-            
         }
     }
 }

@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 56.0, 1064.0, 810.0 ],
+		"rect" : [ 34.0, 56.0, 1061.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -38,6 +38,42 @@
 		"style" : "",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-19",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 796.0, 63.0, 261.0, 22.0 ],
+					"text" : "/Users/sarahjade/Desktop/BD_Blofeld_010.wav"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 796.0, 122.0, 43.0, 22.0 ],
+					"text" : "vocal1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 796.0, 92.0, 167.0, 22.0 ],
+					"text" : "Assets/Resources/vocal1.ogg"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-176",
 					"maxclass" : "comment",
@@ -114,7 +150,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 336.0, 840.0, 32.0, 22.0 ],
+					"patching_rect" : [ 336.0, 922.0, 32.0, 22.0 ],
 					"text" : "print"
 				}
 
@@ -150,28 +186,31 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-162",
-					"linecount" : 5,
+					"linecount" : 11,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 459.0, 805.666667699813843, 50.0, 76.0 ],
+					"patching_rect" : [ 459.0, 805.666667699813843, 50.0, 156.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 322.833333253860474, 521.0, 276.833333492279053, 22.0 ],
-					"text" : "\"Unity Log: gravity.update.osc\""
+					"presentation_linecount" : 2,
+					"presentation_rect" : [ 322.833333253860474, 521.0, 276.833333492279053, 35.0 ],
+					"text" : "\"Unity Log: Updating to audio file: Assets/Resources/vocal1.ogg\""
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-160",
+					"linecount" : 6,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 336.0, 805.666667699813843, 50.0, 22.0 ],
+					"patching_rect" : [ 336.0, 805.666667699813843, 50.0, 89.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 322.833333253860474, 472.0, 276.833333492279053, 22.0 ]
+					"presentation_rect" : [ 322.833333253860474, 472.0, 276.833333492279053, 22.0 ],
+					"text" : "\"Unity Error: Audio file name error.\""
 				}
 
 			}
@@ -337,7 +376,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 593.799999999999955, 49.5, 126.0, 74.0 ],
-					"presentation_linecount" : 5,
 					"text" : "1. id\n2. dynamic fric\n3. static fric\n4. bounciness\n5. trigger"
 				}
 
@@ -489,8 +527,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 105.666666746139526, 166.0, 199.533333253860462, 62.0 ],
-					"text" : "\"Macintosh HD:/Users/sarahjade/UBC/MUSC 420/MVP/Assets/Resources/vocal1.ogg\""
+					"patching_rect" : [ 796.0, 158.0, 199.533333253860462, 62.0 ],
+					"text" : "\"Macintosh HD:/Users/sarahjade/Music/Samples/Tape606SamplePack/Tape606_SamplePack/606HT_05_X.wav\""
 				}
 
 			}
@@ -2099,7 +2137,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 58.5, 259.0, 459.0, 22.0 ],
+					"patching_rect" : [ 796.0, 31.0, 459.0, 22.0 ],
 					"text" : "Macintosh HD:/Users/sarahjade/UBC/MUSC 420/MVP/Assets/Resources/vocal1.ogg"
 				}
 
@@ -2112,7 +2150,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 157.200000000000045, 805.666667699813843, 148.0, 22.0 ],
-					"text" : "/ -0.001576 9.45 -9.45"
+					"text" : "/ 0. -0.10028 -3.99"
 				}
 
 			}
@@ -2149,8 +2187,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 5,
 					"outlettype" : [ "", "", "", "", "" ],
-					"patching_rect" : [ 124.449999999999989, 745.666667699813843, 257.0, 22.0 ],
-					"text" : "OSC-route /num_surfaces /location /errors /log"
+					"patching_rect" : [ 124.449999999999989, 745.666667699813843, 251.0, 22.0 ],
+					"text" : "OSC-route /num_surfaces /location /error /log"
 				}
 
 			}
@@ -2785,6 +2823,8 @@
 					"format" : 6,
 					"id" : "obj-121",
 					"maxclass" : "flonum",
+					"maximum" : 1.0,
+					"minimum" : 0.0,
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
@@ -2800,6 +2840,7 @@
 					"format" : 6,
 					"id" : "obj-119",
 					"maxclass" : "flonum",
+					"minimum" : 0.0,
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
@@ -2814,6 +2855,7 @@
 				"box" : 				{
 					"id" : "obj-117",
 					"maxclass" : "number",
+					"minimum" : 0,
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
@@ -3365,6 +3407,20 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-115", 4 ],
+					"source" : [ "obj-17", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-115", 4 ],
+					"source" : [ "obj-19", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-2", 0 ]
 				}
@@ -3416,6 +3472,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-115", 4 ],
 					"source" : [ "obj-47", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-115", 4 ],
+					"source" : [ "obj-5", 0 ]
 				}
 
 			}

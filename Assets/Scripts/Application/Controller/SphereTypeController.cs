@@ -5,8 +5,8 @@ using UnityEngine;
 public class SphereTypeController : PECController
 {
     private SphereTypesManager sphereTypesManager;
+    private SpheresManager spheresManager;
     public bool sphereTypeLiveUpdate;
-    private SphereController sphereController;
 
     private void Awake()
     {
@@ -17,7 +17,7 @@ public class SphereTypeController : PECController
     private void Start()
     {
         sphereTypesManager = FindObjectOfType<SphereTypesManager>();
-        sphereController = FindObjectOfType<SphereController>();
+        spheresManager = FindObjectOfType<SpheresManager>();
     }
 
     public override void OnNotification(string p_event_path, params object[] p_data)
@@ -30,12 +30,8 @@ public class SphereTypeController : PECController
                 UpdateSphereTypeOsc((OscMessage)p_data[0]);
                 break;
 
-            case Notification.SphereTypeUpdate:
-                SphereType sphereType = (SphereType)p_data[0];
-                UpdateSphereType(sphereType);
-                break;
-
             case Notification.SphereTypeLiveUpdateOsc:
+                app.Notify(Notification.Log, Notification.SphereTypeLiveUpdateOsc);
                 SetSphereTypeLiveUpdate((OscMessage)p_data[0]);
                 break;
 
@@ -51,17 +47,14 @@ public class SphereTypeController : PECController
     public void UpdateSphereTypeOsc(OscMessage message)
     {
         SphereType sphereType = DecodeOscMessage_UpdateSphereType(message);
-        UpdateSphereType(sphereType);
-    }
+        sphereTypesManager.UpdateSphereType(sphereType);
 
-    public void UpdateSphereType(SphereType sphereType)
-    {
-        sphereTypesManager.sphereTypes[sphereType.id] = sphereType;
+        Debug.Log("HERE123");
+        Debug.Log(sphereType.scale);
+        Debug.Log(sphereType.audio_file);
 
         if (sphereTypeLiveUpdate)
-        {
-            sphereController.LiveUpdateSpheres();
-        }
+            spheresManager.LiveUpdateSpheres(sphereTypesManager.GetSphereTypes());
     }
 
     public void SetSphereTypeLiveUpdate(OscMessage message)
@@ -85,50 +78,55 @@ public class SphereTypeController : PECController
 
     SphereType DecodeOscMessage_UpdateSphereType(OscMessage message)
     {
+        // TODO: clean up and separate
+
         int id = message.GetInt(0);
         float scale = message.GetFloat(1);
         float bounciness = message.GetFloat(2);
         float mass = message.GetFloat(3);
 
         // reading audio file string from OscMessage
-        string audioFile = GetStringFromBinary(message);
-        CheckValidAudioFile(audioFile);
+        string audioFile = GetStringFromBinary(4, message);
 
         SphereType sphereType;
 
-        if (CheckValidAudioFile(audioFile)) {
+        if (AudioFileValid(audioFile)) {
             sphereType = new SphereType(id, scale, bounciness, audioFile, mass);
         } else {
+            // return default sphere
+            app.Notify(Notification.LogError, "Sphere type not updated.");
             sphereType = new SphereType();
         }
 
         return sphereType;
     }
 
-    string GetStringFromBinary(OscMessage binaryMessage)
+    string GetStringFromBinary(int startIndex, OscMessage binaryMessage)
     {
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (int char_index = 4; char_index < binaryMessage.values.Count; char_index++)
+        // build string from the rest of the messages
+        for (int char_index = startIndex; char_index < binaryMessage.values.Count; char_index++)
         {
             char af_char = (char)binaryMessage.GetInt((int)char_index);
             stringBuilder.Append(af_char);
         }
+        Debug.Log(stringBuilder.ToString());
         return stringBuilder.ToString();
     }
 
-    bool CheckValidAudioFile(string audioFilePath)
+    bool AudioFileValid(string audioFilePath)
     {
-        if (!File.Exists(audioFilePath))
+        if (!(File.Exists(audioFilePath)))
         {
-            app.Notify(Notification.Error, "Error: Audio file does not exist.");
+            app.Notify(Notification.LogError, "Audio file does not exist.");
             return false;
         }
 
         string fileExtension = Path.GetExtension(audioFilePath);
 
         if (!(fileExtension.Equals(".ogg") || fileExtension.Equals(".mp3") || fileExtension.Equals(".wav"))) {
-            app.Notify(Notification.Error, "Error: Unsupported audio file type.");
+            app.Notify(Notification.LogError, "Unsupported audio file type.");
             return false;
         }
 

@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 56.0, 1068.0, 810.0 ],
+		"rect" : [ 10.0, 56.0, 1068.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -317,6 +317,8 @@
 					"numoutlets" : 0,
 					"offset" : [ 0.0, 0.0 ],
 					"patching_rect" : [ 11.0, 14.0, 662.0, 613.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 11.0, 14.0, 662.0, 613.0 ],
 					"viewvisibility" : 1
 				}
 
@@ -365,7 +367,7 @@
 					"outlettype" : [ "signal", "signal", "signal", "signal", "signal", "signal" ],
 					"patching_rect" : [ 712.583333492279053, 78.333336591720581, 255.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 15.666666746139526, 716.333336591720581, 253.999999999999943, 22.0 ],
+					"presentation_rect" : [ 685.666666746139526, 31.333336591720581, 253.999999999999943, 22.0 ],
 					"text" : "adc~ 1 2 3 4 5 6"
 				}
 
@@ -382,7 +384,7 @@
 					"parameter_enable" : 1,
 					"patching_rect" : [ 712.583333492279053, 127.333336591720581, 255.0, 166.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 15.583333492279024, 764.333336591720581, 255.0, 166.0 ],
+					"presentation_rect" : [ 685.583333492279053, 79.333336591720581, 255.0, 166.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
 							"parameter_mmax" : 6.0,
