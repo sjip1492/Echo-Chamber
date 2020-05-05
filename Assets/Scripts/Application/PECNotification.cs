@@ -23,6 +23,9 @@ public class Notification
     public const string GravityUpdateOsc = "gravity.update.osc";
     public const string GravityUpdate = "gravity.update";
 
+    public const string Error = "error";
+    public const string Log = "log";
+
     // not used or implemented yet
     public const string SurfaceTypeUpdateOsc = "surface.type.update.osc";
     public const string SurfaceTypeUpdate = "surface.type.update";

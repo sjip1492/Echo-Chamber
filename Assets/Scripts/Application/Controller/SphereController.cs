@@ -22,29 +22,28 @@ public class SphereController : PECController
         switch (p_event_path)
         {
             case Notification.SphereTypeUpdateOsc:
-                Debug.Log(Notification.SphereTypeUpdateOsc);
+                app.Notify(Notification.Log, Notification.SphereTypeUpdateOsc);
                 UpdateRecentSphereTypeIdOsc((OscMessage)p_data[0]);
                 break;
 
             case Notification.SphereTypeRecentIdUpdateOsc:
-                Debug.Log(Notification.SphereTypeRecentIdUpdateOsc);
+                app.Notify(Notification.Log, Notification.SphereTypeRecentIdUpdateOsc);
                 UpdateRecentSphereTypeIdOsc((OscMessage)p_data[0]);
                 break;
 
             case Notification.SphereTypeRecentIdUpdate:
+                app.Notify(Notification.Log, Notification.SphereTypeRecentIdUpdate);
                 int sphereTypeId = ((SphereType)p_data[0]).id;
                 SetRecentSphereTypeId(sphereTypeId);
                 break;
 
-            case Notification.SphereGenerate:
-                GenerateSphere();
-                break;
-
             case Notification.ShootSphere:
+                app.Notify(Notification.Log, Notification.ShootSphere);
                 ShootSphere(playerController.player.shootSpeed);
                 break;
 
             case Notification.DeleteSphere:
+                app.Notify(Notification.Log, Notification.DeleteSphere);
                 DeleteSphere();
                 break;
 
@@ -113,18 +112,24 @@ public class SphereController : PECController
 
     public GameObject InstantiateNewSphere(SphereType sphereType)
     {
+        // get camera/player position
         Vector3 position = playerController.player.gameObject.transform.position;
-        GameObject sphere = (GameObject)Instantiate(spheresManager.spherePrefab, position, gameObject.transform.rotation);
-        Sphere s = sphere.GetComponent<Sphere>();
-        s.sphereType = sphereType;
-        s.Init();
 
-        return sphere;
+        // instantiate sphere game object at camera position
+        GameObject sphereObject = (GameObject)Instantiate(spheresManager.spherePrefab, position, gameObject.transform.rotation);
+
+        // initialize sphere script
+        Sphere sphere = sphereObject.GetComponent<Sphere>();
+        sphere.sphereType = sphereType;
+        sphere.Init();
+
+        return sphereObject;
     }
 
     public void DeleteSphere()
     {
         int last_sphere = spheresManager.spheres.Count - 1;
+
         if (last_sphere > -1)
         {
             (spheresManager.spheres[last_sphere]).GetComponent<Sphere>().DestroySphere();
@@ -136,6 +141,7 @@ public class SphereController : PECController
     {
         sphere.sphereType.scale = sphereType.scale;
         sphere.sphereType.bounciness = sphereType.bounciness;
+        sphere.sphereType.mass = sphereType.mass;
         sphere.sphereType.audio_file = sphereType.audio_file;
     }
 

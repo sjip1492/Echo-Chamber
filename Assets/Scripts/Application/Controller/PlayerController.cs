@@ -23,7 +23,7 @@ public class PlayerController : PECController
         switch (p_event_path)
         {
             case Notification.PlayerShootSpeedOsc:
-                Debug.Log("Received Osc message: " + Notification.PlayerShootSpeedOsc);
+                app.Notify(Notification.Log, Notification.PlayerShootSpeedOsc);
                 UpdateShootSpeedOsc((OscMessage)p_data[0]);
                 break;
 
@@ -36,7 +36,7 @@ public class PlayerController : PECController
                 break;
 
             case Notification.GravityUpdateOsc:
-                Debug.Log("Received Osc message: " + Notification.GravityUpdateOsc);
+                app.Notify(Notification.Log, Notification.GravityUpdateOsc);
                 UpdateGravityOsc((OscMessage)p_data[0]);
                 break;
 

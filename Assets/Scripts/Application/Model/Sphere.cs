@@ -17,6 +17,8 @@ public class Sphere : PECModel
     public SphereCollider sphereCollider;
     public JackSourceSend jackSourceSend;
     public Rigidbody rigidBody;
+    public WWW www;
+
 
     private void Awake()
     {
@@ -33,10 +35,29 @@ public class Sphere : PECModel
 
     public void Init()
     {
-        LoadAudioFile();
         UpdateScale(sphereType.scale);
         UpdateBounciness(sphereType.bounciness);
         UpdateMass(sphereType.mass);
+        UpdateAudioFile(sphereType.audio_file);
+    }
+
+    public void UpdateAudioFile(string audio_file)
+    {
+        app.Notify(Notification.Log, "Updating audio file: " + audio_file);
+
+        if (audio_file != null)
+        {
+            www = new WWW(audio_file);
+
+            if (www.error != null)
+            {
+                app.Notify(Notification.Error, www.error);
+            }
+            else
+            {
+                LoadAudioFile(audio_file);
+            }
+        }
     }
 
     public void UpdateMass(float mass)
@@ -88,12 +109,42 @@ public class Sphere : PECModel
         Destroy(gameObject);
     }
 
-    public void LoadAudioFile()
+    public void LoadAudioFile(string audio_file)
     {
-        if (!(sphereType.audio_file is null))
+        if (!(audio_file is null))
         {
-            AudioClip c = Resources.Load<AudioClip>(sphereType.audio_file);
-            audioSource.clip = c;
+            //AudioClip c = Resources.Load<AudioClip>(sphereType.audio_file);
+            //audioSource.clip = c;
+
+            string extension = audio_file.Substring(audio_file.Length - 4);
+
+            if (extension.Equals(".ogg"))
+                audioSource.clip = www.GetAudioClip(false, false, AudioType.OGGVORBIS);
+            else if (extension.Equals(".mp3"))
+                audioSource.clip = www.GetAudioClip(false, false, AudioType.MPEG);
+            else if (extension.Equals(".wav"))
+                audioSource.clip = www.GetAudioClip(false, false, AudioType.WAV);
+            else
+                audioSource.clip = www.GetAudioClip(false, false, AudioType.UNKNOWN);
+
+            if (audioSource.clip.loadState != AudioDataLoadState.Loaded)
+            {
+                StartWait();
+            }
+        } else {
+            app.Notify(Notification.Error, "Error in audio file name " + audio_file + ".");
+        }
+    }
+
+    IEnumerator StartWait()
+    {
+        app.Notify(Notification.Log, "Waiting for audio file to load.");
+
+        yield return new WaitForSeconds(5);
+
+        if (audioSource.clip.loadState != AudioDataLoadState.Loaded)
+        {
+            app.Notify(Notification.Error, "Audio file taking too long to load.");
         }
     }
 }

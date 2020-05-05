@@ -16,9 +16,10 @@ public class SphereType
         this.id = id;
         this.scale = scale;
         this.bounciness = bounciness;
-        this.audio_file = audio_file;
+        //this.audio_file = audio_file;
+        this.audio_file = "Macintosh HD:/Users/sarahjade/UBC/MUSC 420/MVP/Assets/Resources/vocal1.ogg";
         this.mass = mass;
-}
+    }
 
     public SphereType()
     {

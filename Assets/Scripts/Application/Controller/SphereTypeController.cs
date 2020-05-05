@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using System.IO;
+using UnityEngine;
 
 public class SphereTypeController : PECController
 {
@@ -88,25 +90,48 @@ public class SphereTypeController : PECController
         float bounciness = message.GetFloat(2);
         float mass = message.GetFloat(3);
 
-        StringBuilder audio_file = new StringBuilder();
-
         // reading audio file string from OscMessage
-        for (int char_index = 4; char_index < message.values.Count; char_index++)
-        {
-            char af_char = (char)message.GetInt((int)char_index);
-            audio_file.Append(af_char);
+        string audioFile = GetStringFromBinary(message);
+        CheckValidAudioFile(audioFile);
+
+        SphereType sphereType;
+
+        if (CheckValidAudioFile(audioFile)) {
+            sphereType = new SphereType(id, scale, bounciness, audioFile, mass);
+        } else {
+            sphereType = new SphereType();
         }
-
-        string audioFileLocation = HandleAudioFilePath(audio_file.ToString());
-
-        SphereType sphereType = new SphereType(id, scale, bounciness, audioFileLocation, mass);
 
         return sphereType;
     }
 
-    string HandleAudioFilePath(string audioFilePath)
+    string GetStringFromBinary(OscMessage binaryMessage)
     {
+        StringBuilder stringBuilder = new StringBuilder();
 
-        return audioFilePath;
+        for (int char_index = 4; char_index < binaryMessage.values.Count; char_index++)
+        {
+            char af_char = (char)binaryMessage.GetInt((int)char_index);
+            stringBuilder.Append(af_char);
+        }
+        return stringBuilder.ToString();
+    }
+
+    bool CheckValidAudioFile(string audioFilePath)
+    {
+        if (!File.Exists(audioFilePath))
+        {
+            app.Notify(Notification.Error, "Error: Audio file does not exist.");
+            return false;
+        }
+
+        string fileExtension = Path.GetExtension(audioFilePath);
+
+        if (!(fileExtension.Equals(".ogg") || fileExtension.Equals(".mp3") || fileExtension.Equals(".wav"))) {
+            app.Notify(Notification.Error, "Error: Unsupported audio file type.");
+            return false;
+        }
+
+        return true;
     }
 }

@@ -16,7 +16,7 @@ public class SurfaceController : PECController
         switch (p_event_path)
         {
             case Notification.SurfaceTypeUpdateOsc:
-                Debug.Log(Notification.SurfaceTypeUpdateOsc);
+                app.Notify(Notification.Log, Notification.SurfaceTypeUpdateOsc);
                 UpdateSurfaceTypeOsc((OscMessage)p_data[0]);
                 break;
 
