@@ -1,16 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using JackAudio;
 
 public class SurfacesManager : PECModel
 {
-    // TODO: add setting of JackMultiplexer in surfaces upon Room Init
-    // TODO: set field for num outputs in JackMultiplexer
-
     public List<Surface> surfaces = new List<Surface>();
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
         SetSurfaces();

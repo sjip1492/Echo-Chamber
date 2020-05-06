@@ -40,11 +40,17 @@ public class SurfaceController : PECController
 
     void UpdateSurfaceType(int id, float dynamicFriction, float staticFriction, float bounciness)
     {
-        Surface surface = surfacesManager.surfaces[id];
+        if (id <= (surfacesManager.surfaces.Count - 1))
+        {
+            Surface surface = surfacesManager.surfaces[id];
 
-        surface.UpdateDynamicFriction(dynamicFriction);
-        surface.UpdateStaticFriction(staticFriction);
-        surface.UpdateBounciness(bounciness);
+            surface.UpdateDynamicFriction(dynamicFriction);
+            surface.UpdateStaticFriction(staticFriction);
+            surface.UpdateBounciness(bounciness);
+         } else
+        {
+            app.Notify(Notification.LogError, "Invalid surface type ID.");
+        }
     }
 
     void UpdateSurfaceTypeOsc(OscMessage message)

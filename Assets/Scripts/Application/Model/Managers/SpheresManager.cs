@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class SpheresManager : PECModel
@@ -7,7 +6,7 @@ public class SpheresManager : PECModel
     public List<GameObject> spheres = new List<GameObject>();
     public GameObject spherePrefab;
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
         spheres = new List<GameObject>();

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using JackAudio;
@@ -23,7 +22,7 @@ public class Sphere : PECModel
     public UnityWebRequest www;
 
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
 
@@ -46,27 +45,45 @@ public class Sphere : PECModel
         UpdateAudioFile(sphereType.audio_file);
     }
 
-    IEnumerator GetAudioClip(string audioFile, AudioType audioType)
+    IEnumerator GetAudioClip(string audioFile)
     {
-        var uri = new Uri(audioFile);
-        using (www = UnityWebRequestMultimedia.GetAudioClip(uri, audioType))
-        //using (www = UnityWebRequestMultimedia.GetAudioClip("file://" + audioFile, audioType))
+        var formattedAudioFile = FormatAudioFile(audioFile);
+        AudioType audioType = GetAudioType(audioFile);
+
+        using (www = UnityWebRequestMultimedia.GetAudioClip(formattedAudioFile, audioType))
         {
             yield return www.Send();
 
             if (www.isError)
             {
-                Debug.Log(www.error);
+                app.Notify(Notification.LogError, www.error);
             }
             else
             {
                 if (www != null && www.isDone) {
                     AudioClip c = DownloadHandlerAudioClip.GetContent(www);
                     audioSource.clip = c;
+                } else
+                {
+                    app.Notify(Notification.LogError, "Download of audio clip unsuccessful.");
                 }
             }
         }
     }
+
+    Uri FormatAudioFile(string audioFile)
+    {
+        // TODO: something less bad that would work on windows and anything not on MHD
+        if (audioFile.StartsWith("Macintosh HD:"))
+        {
+            audioFile = audioFile.Replace("Macintosh HD:", "");
+        }
+
+        var uri = new Uri(audioFile);
+
+        return uri;
+    }
+
     public void UpdateScale(float scale)
     {
         gameObject.transform.localScale = new Vector3(scale, scale, scale);
@@ -82,27 +99,14 @@ public class Sphere : PECModel
         rigidBody.mass = mass;
     }
 
-    public void UpdateAudioFile(string audio_file)
+    public void UpdateAudioFile(string audioFile)
     {
-        if (audio_file != null)
+        if (audioFile != null)
         {
-            // if updated clip is new
-            if ((audioSource.clip == null) || (audioSource.clip != null && audio_file != audioSource.clip.name))
+            if ((audioSource.clip == null) || (audioSource.clip != null && audioFile != audioSource.clip.name))
             {
-
-                app.Notify(Notification.Log, "Updating to audio file: " + audio_file);
-                StartCoroutine(GetAudioClip(audio_file, GetAudioType(audio_file)));
-
-                //www = new WWW("file:///" + audio_file);
-
-                //if (www.error != null)
-                //{
-                //    app.Notify(Notification.LogError, www.error);
-                //}
-                //else
-                //{
-                //    LoadAudioFile(audio_file);
-                //}
+                app.Notify(Notification.Log, audioFile);
+                StartCoroutine(GetAudioClip(audioFile));
             }
         }
         else
@@ -127,7 +131,7 @@ public class Sphere : PECModel
         {
             // TODO: check how audio channel data is handled coming from audio source
             // TODO: check if audio is playing, then create another jackSourceSend component
-            // that deletes itself when done
+            // that deletes itself when done?
             int track = collision.gameObject.GetComponent<Surface>().id;
             jackSourceSend.trackNumber = track;
             audioSource.Play();
@@ -162,49 +166,8 @@ public class Sphere : PECModel
         }
         else
         {
+            app.Notify(Notification.LogError, "Unsupported audio file type.");
             return AudioType.UNKNOWN;
         }
     }
-
-    //public void LoadAudioFile(string audio_file)
-    //{
-    //    //AudioClip c = Resources.Load<AudioClip>(sphereType.audio_file);
-    //    //audioSource.clip = c;
-    //    string fileExtension = Path.GetExtension(audio_file);
-
-    //    if (fileExtension.Equals(".ogg"))
-    //    {
-    //        audioSource.clip = www.GetAudioClip(false, false, AudioType.OGGVORBIS);
-    //    }
-    //    else if (fileExtension.Equals(".mp3"))
-    //    {
-    //        audioSource.clip = www.GetAudioClip(false, false, AudioType.MPEG);
-    //    }
-    //    else if (fileExtension.Equals(".wav"))
-    //    {
-    //        audioSource.clip = www.GetAudioClip(www, true, false, AudioType.WAV);
-    //        //audioSource.clip = www.GetAudioClip(false, false, AudioType.WAV);
-    //    }
-    //    else
-    //    {
-    //        audioSource.clip = www.GetAudioClip(false, false, AudioType.UNKNOWN);
-    //    }
-
-    //    StartWait();
-    //}
-
-    //IEnumerator StartWait()
-    //{
-    //    if (audioSource.clip.loadState != AudioDataLoadState.Loaded)
-    //    {
-    //        app.Notify(Notification.Log, "Waiting for audio file to load.");
-
-    //        yield return new WaitForSeconds(10f);
-
-    //        if (audioSource.clip.loadState != AudioDataLoadState.Loaded)
-    //        {
-    //            app.Notify(Notification.LogError, "Audio file taking too long to load.");
-    //        }
-    //    }
-    //}
 }

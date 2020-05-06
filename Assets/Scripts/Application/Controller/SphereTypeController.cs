@@ -2,13 +2,14 @@
 using System.IO;
 using UnityEngine;
 
+
 public class SphereTypeController : PECController
 {
     private SphereTypesManager sphereTypesManager;
     private SpheresManager spheresManager;
     public bool sphereTypeLiveUpdate;
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
         sphereTypeLiveUpdate = false;
@@ -49,10 +50,6 @@ public class SphereTypeController : PECController
         SphereType sphereType = DecodeOscMessage_UpdateSphereType(message);
         sphereTypesManager.UpdateSphereType(sphereType);
 
-        Debug.Log("HERE123");
-        Debug.Log(sphereType.scale);
-        Debug.Log(sphereType.audio_file);
-
         if (sphereTypeLiveUpdate)
             spheresManager.LiveUpdateSpheres(sphereTypesManager.GetSphereTypes());
     }
@@ -90,9 +87,12 @@ public class SphereTypeController : PECController
 
         SphereType sphereType;
 
-        if (AudioFileValid(audioFile)) {
+        try
+        {
             sphereType = new SphereType(id, scale, bounciness, audioFile, mass);
-        } else {
+        }
+        catch
+        {
             // return default sphere
             app.Notify(Notification.LogError, "Sphere type not updated.");
             sphereType = new SphereType();
@@ -111,25 +111,7 @@ public class SphereTypeController : PECController
             char af_char = (char)binaryMessage.GetInt((int)char_index);
             stringBuilder.Append(af_char);
         }
-        Debug.Log(stringBuilder.ToString());
+
         return stringBuilder.ToString();
-    }
-
-    bool AudioFileValid(string audioFilePath)
-    {
-        if (!(File.Exists(audioFilePath)))
-        {
-            app.Notify(Notification.LogError, "Audio file does not exist.");
-            return false;
-        }
-
-        string fileExtension = Path.GetExtension(audioFilePath);
-
-        if (!(fileExtension.Equals(".ogg") || fileExtension.Equals(".mp3") || fileExtension.Equals(".wav"))) {
-            app.Notify(Notification.LogError, "Unsupported audio file type.");
-            return false;
-        }
-
-        return true;
     }
 }

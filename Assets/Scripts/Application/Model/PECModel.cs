@@ -10,7 +10,7 @@
 public class PECModel : PECElement
 {
     // Gives access to the application and all instances.
-    protected void Awake()
+    protected new void Awake()
     {
         base.Awake();
         app = FindObjectOfType<PECApplication>();
