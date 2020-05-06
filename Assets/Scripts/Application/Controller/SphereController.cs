@@ -22,29 +22,28 @@ public class SphereController : PECController
         switch (p_event_path)
         {
             case Notification.SphereTypeUpdateOsc:
-                Debug.Log(Notification.SphereTypeUpdateOsc);
-                UpdateRecentSphereTypeIdOsc((OscMessage)p_data[0]);
+                app.Notify(Notification.Log, Notification.SphereTypeUpdateOsc);
+                SetRecentSphereTypeId(((OscMessage)p_data[0]).GetInt(0));
                 break;
 
             case Notification.SphereTypeRecentIdUpdateOsc:
-                Debug.Log(Notification.SphereTypeRecentIdUpdateOsc);
-                UpdateRecentSphereTypeIdOsc((OscMessage)p_data[0]);
+                app.Notify(Notification.Log, Notification.SphereTypeRecentIdUpdateOsc);
+                SetRecentSphereTypeId(((OscMessage)p_data[0]).GetInt(0));
                 break;
 
             case Notification.SphereTypeRecentIdUpdate:
+                app.Notify(Notification.Log, Notification.SphereTypeRecentIdUpdate);
                 int sphereTypeId = ((SphereType)p_data[0]).id;
                 SetRecentSphereTypeId(sphereTypeId);
                 break;
 
-            case Notification.SphereGenerate:
-                GenerateSphere();
-                break;
-
             case Notification.ShootSphere:
+                app.Notify(Notification.Log, Notification.ShootSphere);
                 ShootSphere(playerController.player.shootSpeed);
                 break;
 
             case Notification.DeleteSphere:
+                app.Notify(Notification.Log, Notification.DeleteSphere);
                 DeleteSphere();
                 break;
 
@@ -53,45 +52,39 @@ public class SphereController : PECController
         }
     }
 
-    public void UpdateRecentSphereTypeIdOsc(OscMessage message)
+    void SetRecentSphereTypeId(int id)
     {
-        int id = DecodeOscMessage_UpdateRecentSphereTypeId(message);
-        SetRecentSphereTypeId(id);
-    }
-
-    public void SetRecentSphereTypeId(int id)
-    {
-        recentSphereTypeId = id;
+        if (sphereTypesManager.SphereTypeExists(id))
+        {
+            recentSphereTypeId = id;
+        }
     }
 
     SphereType GetRecentSphereType()
     {
         SphereType sphereType;
 
-        if (recentSphereTypeId > sphereTypesManager.sphereTypes.Count || recentSphereTypeId == -1)
+        if (recentSphereTypeId == -1)
         {
-            SetRecentSphereTypeId(1);
             sphereType = new SphereType();
+            sphereTypesManager.UpdateSphereType(sphereType);
+            SetRecentSphereTypeId(sphereType.id);
         }
         else
         {
-            sphereType = sphereTypesManager.sphereTypes[recentSphereTypeId];
+            sphereType = sphereTypesManager.GetSphereType(recentSphereTypeId);
         }
 
         return sphereType;
     }
 
-    int DecodeOscMessage_UpdateRecentSphereTypeId(OscMessage message)
-    {
-        return message.GetInt(0);
-    }
-
-    public void ShootSphere(float speed)
+    void ShootSphere(float speed)
     {
         GameObject sphere = GenerateSphere();
+
         DisableCameraCollision(sphere);
-        // TODO: refactor the shoot sphere to take place inside player controller?
-        sphere.GetComponent<Sphere>().ShootSphere(playerController.player.shootSpeed);
+
+        sphere.GetComponent<Sphere>().ShootSphere(speed);
     }
 
     void DisableCameraCollision(GameObject sphereObject)
@@ -102,7 +95,7 @@ public class SphereController : PECController
         }
     }
 
-    public GameObject GenerateSphere()
+    GameObject GenerateSphere()
     {
         SphereType recentSphereType = GetRecentSphereType();
         GameObject newSphere = InstantiateNewSphere(recentSphereType);
@@ -111,42 +104,28 @@ public class SphereController : PECController
         return newSphere;
     }
 
-    public GameObject InstantiateNewSphere(SphereType sphereType)
+    GameObject InstantiateNewSphere(SphereType sphereType)
     {
+        // get camera/player position
         Vector3 position = playerController.player.gameObject.transform.position;
-        GameObject sphere = (GameObject)Instantiate(spheresManager.spherePrefab, position, gameObject.transform.rotation);
-        Sphere s = sphere.GetComponent<Sphere>();
-        s.sphereType = sphereType;
-        s.Init();
 
-        return sphere;
+        // instantiate sphere game object at camera position
+        GameObject sphereObject = (GameObject)Instantiate(spheresManager.spherePrefab, position, gameObject.transform.rotation);
+
+        // initialize sphere script
+        sphereObject.GetComponent<Sphere>().Init(sphereType);
+
+        return sphereObject;
     }
 
-    public void DeleteSphere()
+    void DeleteSphere()
     {
         int last_sphere = spheresManager.spheres.Count - 1;
+
         if (last_sphere > -1)
         {
             (spheresManager.spheres[last_sphere]).GetComponent<Sphere>().DestroySphere();
             spheresManager.spheres.RemoveAt(last_sphere);
-        }
-    }
-
-    public void UpdateSphereTypeComponent(Sphere sphere, SphereType sphereType)
-    {
-        sphere.sphereType.scale = sphereType.scale;
-        sphere.sphereType.bounciness = sphereType.bounciness;
-        sphere.sphereType.audio_file = sphereType.audio_file;
-    }
-
-    public void LiveUpdateSpheres()
-    {
-        foreach (var sphereObject in spheresManager.spheres)
-        {
-            Sphere sphere = sphereObject.GetComponent<Sphere>();
-            SphereType newSphereType = sphereTypesManager.sphereTypes[sphere.sphereType.id];
-            UpdateSphereTypeComponent(sphere, newSphereType);
-            sphere.Init();
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using JackAudio;
+using System.IO;
+using System;
 
 public class Sphere : PECModel
 {
@@ -10,17 +12,20 @@ public class Sphere : PECModel
     // TODO: implement type-ID composite ID
     // TODO: implement delete by composite ID
     public int id;
-
-    public SphereType sphereType;
+    public int sphereTypeId;
 
     public AudioSource audioSource;
     public SphereCollider sphereCollider;
     public JackSourceSend jackSourceSend;
     public Rigidbody rigidBody;
+    //public WWW www;
+    public UnityWebRequest www;
 
-    private void Awake()
+
+    private new void Awake()
     {
         base.Awake();
+
         sphereCollider = gameObject.GetComponent<SphereCollider>();
         audioSource = gameObject.GetComponent<AudioSource>();
         jackSourceSend = gameObject.GetComponent<JackSourceSend>();
@@ -28,20 +33,55 @@ public class Sphere : PECModel
 
         // TODO: load this in a different way, faster, have multiplexer object stored somewhere
         jackSourceSend.multiplexer = FindObjectOfType<JackMultiplexer>();
-
     }
 
-    public void Init()
+    public void Init(SphereType sphereType)
     {
-        LoadAudioFile();
+        sphereTypeId = sphereType.id;
+
         UpdateScale(sphereType.scale);
         UpdateBounciness(sphereType.bounciness);
         UpdateMass(sphereType.mass);
+        UpdateAudioFile(sphereType.audio_file);
     }
 
-    public void UpdateMass(float mass)
+    IEnumerator GetAudioClip(string audioFile)
     {
-        rigidBody.mass = mass;
+        var formattedAudioFile = FormatAudioFile(audioFile);
+        AudioType audioType = GetAudioType(audioFile);
+
+        using (www = UnityWebRequestMultimedia.GetAudioClip(formattedAudioFile, audioType))
+        {
+            yield return www.Send();
+
+            if (www.isError)
+            {
+                app.Notify(Notification.LogError, www.error);
+            }
+            else
+            {
+                if (www != null && www.isDone) {
+                    AudioClip c = DownloadHandlerAudioClip.GetContent(www);
+                    audioSource.clip = c;
+                } else
+                {
+                    app.Notify(Notification.LogError, "Download of audio clip unsuccessful.");
+                }
+            }
+        }
+    }
+
+    Uri FormatAudioFile(string audioFile)
+    {
+        // TODO: something less bad that would work on windows and anything not on MHD
+        if (audioFile.StartsWith("Macintosh HD:"))
+        {
+            audioFile = audioFile.Replace("Macintosh HD:", "");
+        }
+
+        var uri = new Uri(audioFile);
+
+        return uri;
     }
 
     public void UpdateScale(float scale)
@@ -52,6 +92,27 @@ public class Sphere : PECModel
     public void UpdateBounciness(float bounciness)
     {
         sphereCollider.sharedMaterial.bounciness = bounciness;
+    }
+
+    public void UpdateMass(float mass)
+    {
+        rigidBody.mass = mass;
+    }
+
+    public void UpdateAudioFile(string audioFile)
+    {
+        if (audioFile != null)
+        {
+            if ((audioSource.clip == null) || (audioSource.clip != null && audioFile != audioSource.clip.name))
+            {
+                app.Notify(Notification.Log, audioFile);
+                StartCoroutine(GetAudioClip(audioFile));
+            }
+        }
+        else
+        {
+            app.Notify(Notification.LogError, "Audio file name error.");
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -70,12 +131,11 @@ public class Sphere : PECModel
         {
             // TODO: check how audio channel data is handled coming from audio source
             // TODO: check if audio is playing, then create another jackSourceSend component
-            // that deletes itself when done
+            // that deletes itself when done?
             int track = collision.gameObject.GetComponent<Surface>().id;
             jackSourceSend.trackNumber = track;
+            audioSource.Play();
         }
-
-        audioSource.Play();
     }
 
     public void ShootSphere(float speed)
@@ -88,12 +148,26 @@ public class Sphere : PECModel
         Destroy(gameObject);
     }
 
-    public void LoadAudioFile()
+    AudioType GetAudioType(string audioFile)
     {
-        if (!(sphereType.audio_file is null))
+        string fileExtension = Path.GetExtension(audioFile);
+
+        if (fileExtension.Equals(".ogg"))
         {
-            AudioClip c = Resources.Load<AudioClip>(sphereType.audio_file);
-            audioSource.clip = c;
+            return AudioType.OGGVORBIS;
+        }
+        else if (fileExtension.Equals(".mp3"))
+        {
+            return AudioType.MPEG;
+        }
+        else if (fileExtension.Equals(".wav"))
+        {
+            return AudioType.WAV;
+        }
+        else
+        {
+            app.Notify(Notification.LogError, "Unsupported audio file type.");
+            return AudioType.UNKNOWN;
         }
     }
 }

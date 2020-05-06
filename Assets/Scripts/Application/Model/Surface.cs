@@ -10,7 +10,7 @@ public class Surface: PECModel
     public float bounciness;
     public BoxCollider boxCollider;
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
         boxCollider = gameObject.GetComponent<BoxCollider>();

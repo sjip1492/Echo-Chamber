@@ -1,12 +1,15 @@
 ﻿using System.Text;
+using System.IO;
+using UnityEngine;
+
 
 public class SphereTypeController : PECController
 {
     private SphereTypesManager sphereTypesManager;
+    private SpheresManager spheresManager;
     public bool sphereTypeLiveUpdate;
-    private SphereController sphereController;
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
         sphereTypeLiveUpdate = false;
@@ -15,7 +18,7 @@ public class SphereTypeController : PECController
     private void Start()
     {
         sphereTypesManager = FindObjectOfType<SphereTypesManager>();
-        sphereController = FindObjectOfType<SphereController>();
+        spheresManager = FindObjectOfType<SpheresManager>();
     }
 
     public override void OnNotification(string p_event_path, params object[] p_data)
@@ -28,12 +31,8 @@ public class SphereTypeController : PECController
                 UpdateSphereTypeOsc((OscMessage)p_data[0]);
                 break;
 
-            case Notification.SphereTypeUpdate:
-                SphereType sphereType = (SphereType)p_data[0];
-                UpdateSphereType(sphereType);
-                break;
-
             case Notification.SphereTypeLiveUpdateOsc:
+                app.Notify(Notification.Log, Notification.SphereTypeLiveUpdateOsc);
                 SetSphereTypeLiveUpdate((OscMessage)p_data[0]);
                 break;
 
@@ -49,17 +48,10 @@ public class SphereTypeController : PECController
     public void UpdateSphereTypeOsc(OscMessage message)
     {
         SphereType sphereType = DecodeOscMessage_UpdateSphereType(message);
-        UpdateSphereType(sphereType);
-    }
-
-    public void UpdateSphereType(SphereType sphereType)
-    {
-        sphereTypesManager.sphereTypes[sphereType.id] = sphereType;
+        sphereTypesManager.UpdateSphereType(sphereType);
 
         if (sphereTypeLiveUpdate)
-        {
-            sphereController.LiveUpdateSpheres();
-        }
+            spheresManager.LiveUpdateSpheres(sphereTypesManager.GetSphereTypes());
     }
 
     public void SetSphereTypeLiveUpdate(OscMessage message)
@@ -83,30 +75,43 @@ public class SphereTypeController : PECController
 
     SphereType DecodeOscMessage_UpdateSphereType(OscMessage message)
     {
+        // TODO: clean up and separate
+
         int id = message.GetInt(0);
         float scale = message.GetFloat(1);
         float bounciness = message.GetFloat(2);
         float mass = message.GetFloat(3);
 
-        StringBuilder audio_file = new StringBuilder();
-
         // reading audio file string from OscMessage
-        for (int char_index = 4; char_index < message.values.Count; char_index++)
+        string audioFile = GetStringFromBinary(4, message);
+
+        SphereType sphereType;
+
+        try
         {
-            char af_char = (char)message.GetInt((int)char_index);
-            audio_file.Append(af_char);
+            sphereType = new SphereType(id, scale, bounciness, audioFile, mass);
         }
-
-        string audioFileLocation = HandleAudioFilePath(audio_file.ToString());
-
-        SphereType sphereType = new SphereType(id, scale, bounciness, audioFileLocation, mass);
+        catch
+        {
+            // return default sphere
+            app.Notify(Notification.LogError, "Sphere type not updated.");
+            sphereType = new SphereType();
+        }
 
         return sphereType;
     }
 
-    string HandleAudioFilePath(string audioFilePath)
+    string GetStringFromBinary(int startIndex, OscMessage binaryMessage)
     {
+        StringBuilder stringBuilder = new StringBuilder();
 
-        return audioFilePath;
+        // build string from the rest of the messages
+        for (int char_index = startIndex; char_index < binaryMessage.values.Count; char_index++)
+        {
+            char af_char = (char)binaryMessage.GetInt((int)char_index);
+            stringBuilder.Append(af_char);
+        }
+
+        return stringBuilder.ToString();
     }
 }

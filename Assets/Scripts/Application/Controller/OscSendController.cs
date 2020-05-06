@@ -1,11 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class OscSendController : PECController
 {
     public OscManager oscManager;
     public SurfaceController surfaceController;
+
+    string NumSurfaceInfoAddress = "/num_surfaces";
+    string SpherePositionsAddress = "/location";
+    string ErrorAddress = "/error";
+    string LogAddress = "/log";
 
     // Update is called once per frame
     void Update()
@@ -26,8 +30,17 @@ public class OscSendController : PECController
         switch (p_event_path)
         {
             case Notification.RoomInfoGetOsc:
+                app.Notify(Notification.Log, Notification.RoomInfoGetOsc);
                 Debug.Log(Notification.RoomInfoGetOsc);
                 SendRoomInfoOsc();
+                break;
+
+            case Notification.LogError:
+                SendError((string)p_data[0]);
+                break;
+
+            case Notification.Log:
+                SendLog((string)p_data[0]);
                 break;
 
             default:
@@ -35,6 +48,27 @@ public class OscSendController : PECController
         }
     }
 
+    void SendError(string errorString)
+    {
+        OscMessage errorStringMessage = new OscMessage();
+
+        errorStringMessage.address = ErrorAddress;
+
+        errorStringMessage.values.Add("Unity Error: " + errorString);
+
+        oscManager.osc.Send(errorStringMessage);
+    }
+
+    void SendLog(string logString)
+    {
+        OscMessage logStringMessage = new OscMessage();
+
+        logStringMessage.address = LogAddress;
+
+        logStringMessage.values.Add("Unity Log: " + logString);
+
+        oscManager.osc.Send(logStringMessage);
+    }
 
     void SendSpherePositionsOsc()
     {
@@ -54,7 +88,7 @@ public class OscSendController : PECController
         for (var id = 0; id < sphere_positions.Count; id++)
         {
             OscMessage pos_msg = new OscMessage();
-            pos_msg.address = "/location/" + id + "/";
+            pos_msg.address = SpherePositionsAddress + "/" + id + "/";
 
             Vector3 pos = sphere_positions[id];
 
@@ -73,7 +107,7 @@ public class OscSendController : PECController
         int numSurfaces = surfaceController.GetNumSurfaces();
         OscMessage numSurfaceInfoMessage = new OscMessage();
 
-        numSurfaceInfoMessage.address = "/num_surfaces";
+        numSurfaceInfoMessage.address = NumSurfaceInfoAddress;
 
         numSurfaceInfoMessage.values.Add(numSurfaces);
 
