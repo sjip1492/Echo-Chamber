@@ -128,7 +128,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
-  Spatialize: 0
+  Spatialize: 1
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
@@ -168,7 +168,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -222,9 +222,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   app: {fileID: 0}
   id: 0
+  sphereTypeId: 0
   audioSource: {fileID: 0}
   sphereCollider: {fileID: 0}
   jackSourceSend: {fileID: 0}
+  rigidBody: {fileID: 0}
 --- !u!114 &5948434869742451692
 MonoBehaviour:
   m_ObjectHideFlags: 0

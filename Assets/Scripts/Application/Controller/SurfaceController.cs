@@ -40,7 +40,7 @@ public class SurfaceController : PECController
 
     void UpdateSurfaceType(int id, float dynamicFriction, float staticFriction, float bounciness)
     {
-        if (id <= (surfacesManager.surfaces.Count - 1))
+        if (id <= (surfacesManager.surfaces.Count - 1) && id > -1)
         {
             Surface surface = surfacesManager.surfaces[id];
 

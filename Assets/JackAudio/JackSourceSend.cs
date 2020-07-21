@@ -23,46 +23,73 @@ using System.Collections;
 namespace JackAudio
 {
 
-[RequireComponent (typeof (AudioSource))]
-public class JackSourceSend : MonoBehaviour {
+    [RequireComponent (typeof (AudioSource))]
+    public class JackSourceSend : MonoBehaviour {
 
-    public JackMultiplexer multiplexer;
-    public int trackNumber;
-	private int BUFFER_SIZE;
-    private float[] monodata;
+        public JackMultiplexer multiplexer;
+        public int trackNumber;
+	    private int BUFFER_SIZE;
+        private float[] monodata;
+        private float[] monodataL;
+        private float[] monodataR;
 
-    public bool IsMuted = false;
+        public bool IsMuted = false;
 
-    void Awake() {
-        BUFFER_SIZE = multiplexer.GetBufferSize();
-        monodata = new float[BUFFER_SIZE]; //this has to be set from options
-        // Check if multiplexer is there, and check if id is unique //
-        if (multiplexer == null)
-        {
-            Debug.LogError("Cannot start without multiplexer, trying to find a multiplexer component in the scene");
-            multiplexer = FindObjectOfType<JackMultiplexer>();
-        }
-    }
-    
-    // Dont add to the audio filter callback for control, use the AudioSource instead. 
-    void OnAudioFilterRead(float[] buffer, int channels)
-    {
-        if (multiplexer.isRunning())
-        {
-            /* force to mono*/
-            if (channels == 2)
+        void Awake() {
+            BUFFER_SIZE = multiplexer.GetBufferSize();
+            monodata = new float[BUFFER_SIZE]; //this has to be set from options
+            monodataL = new float[BUFFER_SIZE]; //this has to be set from options
+            monodataR = new float[BUFFER_SIZE]; //this has to be set from options
+                                                   // Check if multiplexer is there, and check if id is unique //
+            if (multiplexer == null)
             {
-                for (int i = 0,j=0; i < BUFFER_SIZE; i++,j+=2)
-                {
-                    monodata[i] = buffer[j] + buffer[j+1];
-                }
+                Debug.LogError("Cannot start without multiplexer, trying to find a multiplexer component in the scene");
+                multiplexer = FindObjectOfType<JackMultiplexer>();
             }
-            System.Array.Copy(monodata, multiplexer.combinedBuffers[trackNumber], BUFFER_SIZE);
         }
-        // We need to zero the buffer after copying it,
-        // otherwise it will play in unity as well
-        System.Array.Clear(buffer, 0, buffer.Length);
-    }
-}
+    
+        // Dont add to the audio filter callback for control, use the AudioSource instead. 
+        void OnAudioFilterRead(float[] buffer, int channels)
+        {
+            if (multiplexer.isRunning())
+            {
+                ///* force to mono*/
+                //if (channels == 2)
+                //{
+                //    for (int i = 0,j=0; i < BUFFER_SIZE; i++,j+=2)
+                //    {
+                //        monodata[i] = buffer[j] + buffer[j+1];
+                //    }
+                //}
+                //System.Array.Copy(monodata, multiplexer.combinedBuffers[trackNumber], BUFFER_SIZE);
 
+
+                /* force to stereo */
+                if (channels == 2)
+                {
+                    for (int i = 0; i < BUFFER_SIZE; i+=2)
+                    {
+                        monodataL[i] = buffer[i];
+                        monodataR[i] = buffer[i + 1];
+                    }
+
+                    System.Array.Copy(monodataL, multiplexer.combinedBuffers[trackNumber], BUFFER_SIZE);
+                    System.Array.Copy(monodataR, multiplexer.combinedBuffers[trackNumber + 1], BUFFER_SIZE);
+                } else
+                {
+                    for (int i = 0; i < BUFFER_SIZE; i++)
+                    {
+                        monodata[i] = buffer[i];
+                    }
+
+                    System.Array.Copy(monodata, multiplexer.combinedBuffers[trackNumber], BUFFER_SIZE);
+                    System.Array.Copy(monodata, multiplexer.combinedBuffers[trackNumber + 1], BUFFER_SIZE);
+                }
+
+            }
+            // We need to zero the buffer after copying it,
+            // otherwise it will play in unity as well
+            System.Array.Clear(buffer, 0, buffer.Length);
+        }
+    }
 }

@@ -18,9 +18,8 @@ public class Sphere : PECModel
     public SphereCollider sphereCollider;
     public JackSourceSend jackSourceSend;
     public Rigidbody rigidBody;
-    //public WWW www;
-    public UnityWebRequest www;
-
+    public UnityWebRequest req;
+    int NumChannelSend = 2;
 
     private new void Awake()
     {
@@ -50,18 +49,18 @@ public class Sphere : PECModel
         var formattedAudioFile = FormatAudioFile(audioFile);
         AudioType audioType = GetAudioType(audioFile);
 
-        using (www = UnityWebRequestMultimedia.GetAudioClip(formattedAudioFile, audioType))
+        using (req = UnityWebRequestMultimedia.GetAudioClip(formattedAudioFile, audioType))
         {
-            yield return www.Send();
+            yield return req.SendWebRequest();
 
-            if (www.isError)
+            if (req.isNetworkError)
             {
-                app.Notify(Notification.LogError, www.error);
+                app.Notify(Notification.LogError, req.error);
             }
             else
             {
-                if (www != null && www.isDone) {
-                    AudioClip c = DownloadHandlerAudioClip.GetContent(www);
+                if (req != null && req.isDone) {
+                    AudioClip c = DownloadHandlerAudioClip.GetContent(req);
                     audioSource.clip = c;
                 } else
                 {
@@ -133,7 +132,7 @@ public class Sphere : PECModel
             // TODO: check if audio is playing, then create another jackSourceSend component
             // that deletes itself when done?
             int track = collision.gameObject.GetComponent<Surface>().id;
-            jackSourceSend.trackNumber = track;
+            jackSourceSend.trackNumber = track * NumChannelSend;
             audioSource.Play();
         }
     }

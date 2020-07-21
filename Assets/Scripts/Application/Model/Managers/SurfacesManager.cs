@@ -5,6 +5,7 @@ using JackAudio;
 public class SurfacesManager : PECModel
 {
     public List<Surface> surfaces = new List<Surface>();
+    int NumChannelSends = 2;
 
     private new void Awake()
     {
@@ -16,7 +17,7 @@ public class SurfacesManager : PECModel
     void SetJackMultiplexerOuts()
     {
         JackMultiplexer jackMultiplexer = FindObjectOfType<JackMultiplexer>();
-        jackMultiplexer.OUTPUTS = surfaces.Count;
+        jackMultiplexer.OUTPUTS = surfaces.Count * NumChannelSends;
     }
 
     void SetSurfaces()

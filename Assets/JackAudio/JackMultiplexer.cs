@@ -31,7 +31,10 @@ namespace JackAudio
 
         // Default unity buffer size per mono block
         private int BUFFER_SIZE = 1024;
-        // private int BUFFER_SIZE = 512;
+        //private int BUFFER_SIZE = 512;
+        //private int BUFFER_SIZE = 256;
+        //private int BUFFER_SIZE = 2048;
+        //private int BUFFER_SIZE = 4096;
         public bool useEffects;
 
         [HideInInspector]
@@ -146,7 +149,7 @@ namespace JackAudio
             JackWrapper.SetMixedData(mixedBufferOut);
             JackWrapper.GetMixedData(mixedBufferIn);
 
-            // System.Array.Clear(buffer, 0, buffer.Length);
+            //System.Array.Clear(buffer, 0, buffer.Length);
         }
     }
 }
